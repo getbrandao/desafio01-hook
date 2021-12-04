@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import { api } from '../services/api';
 import { Product, Stock } from '../types';
@@ -32,20 +32,6 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
     return [];
   });
 
-  const prevCartRef = useRef<Product[]>();
-
-  useEffect(() => {
-    prevCartRef.current = cart;
-  });
-
-  const cartPrevValue = prevCartRef.current ?? cart;
-
-  useEffect(() => {
-    if (cartPrevValue !== cart) {
-      localStorage.setItem('@RocketShoes:cart', JSON.stringify(cart));
-    }
-  }, [cart, cartPrevValue]);
-
   const addProduct = async (productId: number) => {
     try {
       const productsCart = [...cart];
@@ -67,7 +53,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
         productsCart.push(addProduct);
       });
       
-      // localStorage.setItem('@RocketShoes:cart', JSON.stringify(productsCart));
+      localStorage.setItem('@RocketShoes:cart', JSON.stringify(productsCart));
       setCart(productsCart);
     } catch {
       toast.error('Erro na adição do produto');
@@ -79,7 +65,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       const productExists = cart.find((product) => product.id === productId);
       if (productExists) {
         const removeProduct = cart.filter((product) => product.id !== productId);
-        // localStorage.setItem('@RocketShoes:cart', JSON.stringify(removeProduct));
+        localStorage.setItem('@RocketShoes:cart', JSON.stringify(removeProduct));
         setCart(removeProduct);
         return;
       }  
@@ -109,7 +95,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
       if(productExists) {
         productExists.amount = amount;
-        // localStorage.setItem('@RocketShoes:cart', JSON.stringify(productsCart))
+        localStorage.setItem('@RocketShoes:cart', JSON.stringify(productsCart))
         setCart(productsCart);
         return
       }

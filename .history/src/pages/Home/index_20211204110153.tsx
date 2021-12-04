@@ -26,6 +26,7 @@ const Home = (): JSX.Element => {
   const { addProduct, cart } = useCart();
 
   const cartItemsAmount = cart.reduce((sumAmount, product) => {
+    console.log("SUMAMOUNT: ", sumAmount)
     const updateSumAmount = { ...sumAmount };
     updateSumAmount[product.id] = product.amount;
     return updateSumAmount
@@ -45,6 +46,7 @@ const Home = (): JSX.Element => {
 
   return (
     <ProductList>
+      {console.log("==>", cartItemsAmount)}
       {products.map(product => (
         <li key={product.id}>
           <img src={product.image} alt={product.image} />

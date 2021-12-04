@@ -45,6 +45,7 @@ const Home = (): JSX.Element => {
 
   return (
     <ProductList>
+      {console.log("==>", cartItemsAmount)}
       {products.map(product => (
         <li key={product.id}>
           <img src={product.image} alt={product.image} />
